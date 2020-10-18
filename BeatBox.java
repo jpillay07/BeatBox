@@ -53,6 +53,14 @@ public class BeatBox{
         downTempo.addActionListener(new MyDownTempoListener());
         buttonBox.add(downTempo);
 
+        JButton SaveBeat = new JButton("Save Beat");
+        SaveBeat.addActionListener(new MySendListener());
+        buttonBox.add(SaveBeat);
+
+        JButton LoadBeat = new JButton("Load Beat");
+        LoadBeat.addActionListener(new MyReadInListener());
+        buttonBox.add(LoadBeat);
+
         Box nameBox = new Box(BoxLayout.Y_AXIS);
         for(int i = 0; i < 16; i++){
             nameBox.add(new Label(instrumentNames[i]));
@@ -191,7 +199,9 @@ public class BeatBox{
             }
 
             try{
-                FileOutputStream fileStream = new FileOutputStream(new File("Checkbox.ser"));
+                JFileChooser fileSave = new JFileChooser();
+                fileSave.showSaveDialog(theFrame);
+                FileOutputStream fileStream = new FileOutputStream(fileSave.getSelectedFile());
                 ObjectOutputStream os = new ObjectOutputStream(fileStream);
                 os.writeObject(checkboxState);
             }catch(Exception ex){
@@ -209,7 +219,9 @@ public class BeatBox{
             boolean[] checkboxState = new boolean[256];
 
             try{
-                FileInputStream fileIn = new FileInputStream(new File("Checkbox.ser"));
+                JFileChooser fileSave = new JFileChooser();
+                fileSave.showSaveDialog(theFrame);
+                FileInputStream fileIn = new FileInputStream(fileSave.getSelectedFile());
                 ObjectInputStream is = new ObjectInputStream(fileIn);
                 checkboxState = (boolean[])is.readObject();
             }catch(Exception ex){
